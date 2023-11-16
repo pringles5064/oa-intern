@@ -1,6 +1,3 @@
-// This function below will convert the data in states.js to geojson format 
-//Week 3 Task 1
-
 export const convertToGeoJSON = (data) => {
     const geoJsonForm = {
       type: 'FeatureCollection',
