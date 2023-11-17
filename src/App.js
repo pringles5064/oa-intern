@@ -16,7 +16,7 @@ export default function App() {
   const [lat, setLat] = useState(42.35);
   const [zoom, setZoom] = useState(3);
   const [opacity, setOpacity] = useState(0.5); // Add opacity stat
-  const [selectedOption, setSelectedOption] = useState(null);
+  //const [selectedOption, setSelectedOption] = useState(null);
   const [layerOpacity, setLayerOpacity] = useState(0.5); 
   const [selectedState, setSelectedState] = useState(null); 
 
@@ -123,6 +123,7 @@ export default function App() {
   );
 
   const options = [
+    {value: 'Select', label: 'Select'},
     { value: 'Arizona', label: 'Arizona' },
     { value: 'Colorado', label: 'Colorado' },
     { value: 'Connecticut', label: 'Connecticut' }
@@ -146,9 +147,26 @@ export default function App() {
     }),
   };
 
+  const handleReset = () => {
+    // Reset colors and opacity to initial values
+    map.current.setPaintProperty('states', 'fill-color', [
+      'match',
+      ['get', 'name'],
+      'Arizona', '#FF5733',
+      'Connecticut', '#33FF57',
+      'Colorado', '#5733FF',
+      '#808080' // Default color for unspecified states
+    ]);
+    map.current.setPaintProperty('states', 'fill-opacity', 0.5);
+
+    // Reset the selected state and opacity state
+    setSelectedState(null);
+    setOpacity(0.5);
+  };
+
   return (
     <div>
-      <div className="opacity-slider-container">
+      <div className="opacity-slider-container">Color
         <ReactSlider
           min={0}
           max={100}
@@ -161,7 +179,7 @@ export default function App() {
           renderThumb={renderThumb}
         />
       </div>
-      <div className="layer-opacity-container">
+      <div className="layer-opacity-container">Display
         <ReactSlider
           min={0}
           max={100}
@@ -182,6 +200,7 @@ export default function App() {
           styles={customStyles}
         />
       </div>
+      <button onClick={handleReset}>Reset</button>
       <div ref={mapContainer} className="map-container" />
     </div>
   );
